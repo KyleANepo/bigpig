@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     private float dashingTime = 0.2f;
     private float dashingCooldown = 1f;
 
+    public Animator animator;
+
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -46,6 +48,12 @@ public class Player : MonoBehaviour
         {
             return;
         }
+
+        animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
+
+        animator.SetBool("IsGrounded", IsGrounded());
+
+        animator.SetBool("IsWallSliding", isWallSliding);
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
