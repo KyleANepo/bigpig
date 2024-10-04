@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -23,7 +24,7 @@ public class Player : MonoBehaviour
     private bool canDash = true;
     private bool isDashing;
     private float dashingPower = 18f;
-    private float dashingTime = 0.2f;
+    private float dashingTime = 0.2f; 
     private float dashingCooldown = 1f;
 
     public Animator animator;
@@ -44,6 +45,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            Swap();
+        }
+
         if (isDashing)
         {
             return;
@@ -67,7 +73,7 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !IsWalled())
         {
             StartCoroutine(Dash());
         }
@@ -182,5 +188,24 @@ public class Player : MonoBehaviour
         isDashing = false;
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
+    }
+
+    private int tiles;
+    public GameObject tile1;
+    public GameObject tile2;
+
+    private void Swap()
+    {
+        if (tiles == 0)
+        {
+            tiles = 1;
+            tile2.SetActive(true);
+            tile1.SetActive(false);
+        } else
+        {
+            tiles = 0;
+            tile1.SetActive(true);
+            tile2.SetActive(false);
+        }
     }
 }

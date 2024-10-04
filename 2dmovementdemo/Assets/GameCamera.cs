@@ -8,11 +8,16 @@ public class GameCamera : MonoBehaviour
     public float smoothSpeed = 0.125f;
     public Vector3 locationOffset;
     // public Vector3 rotationOffset;
-
-    void FixedUpdate()
+    
+    void Update()
     {
         Vector3 desiredPosition = target.position + Quaternion.identity * locationOffset;
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
+    }
+
+    void FixedUpdate()
+    {
+        
     }
 }
