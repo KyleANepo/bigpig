@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -10,9 +11,11 @@ public class Player : MonoBehaviour
     private float speed = 8f;
     private float jumpingPower = 16f;
     private bool isFacingRight = true;
+    private float coyoteTime = 0.05f;
+    private float coyoteTimeCounter;
 
     private bool isWallSliding;
-    private float wallSlidingSpeed = 2f;
+    private float wallSlidingSpeed = 3f;
 
     private bool isWallJumping;
     private float wallJumpingDirection;
@@ -36,18 +39,28 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
 
+    public Transform checkPoint;
+    private bool isDead;
+    public GameObject gameover;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        isDead = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (isDead)
         {
-            Swap();
+            if (Input.GetButtonDown("Jump"))
+            {
+                isDead = false;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            rb.velocity = Vector3.zero;
+            return;
         }
 
         if (isDashing)
@@ -63,7 +76,16 @@ public class Player : MonoBehaviour
 
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (IsGrounded())
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+
+        if (coyoteTimeCounter > 0f && Input.GetButtonDown("Jump"))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
@@ -71,6 +93,8 @@ public class Player : MonoBehaviour
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+
+            coyoteTimeCounter = 0f;
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !IsWalled())
@@ -90,7 +114,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isDashing)
+        if (isDashing || isDead)
         {
             return;
         }
@@ -174,6 +198,18 @@ public class Player : MonoBehaviour
         
     }
 
+    public GameObject deathEffect;
+
+    public void Die()
+    {
+        isDead = true;
+        rb.gravityScale = 0f;
+        GameObject CE = Instantiate(deathEffect, transform.position, transform.rotation);
+        animator.SetBool("IsDead", true);
+        animator.Play("dead");
+        gameover.SetActive(true);
+    }
+
     private IEnumerator Dash()
     {
         canDash = false;
@@ -188,24 +224,5 @@ public class Player : MonoBehaviour
         isDashing = false;
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
-    }
-
-    private int tiles;
-    public GameObject tile1;
-    public GameObject tile2;
-
-    private void Swap()
-    {
-        if (tiles == 0)
-        {
-            tiles = 1;
-            tile2.SetActive(true);
-            tile1.SetActive(false);
-        } else
-        {
-            tiles = 0;
-            tile1.SetActive(true);
-            tile2.SetActive(false);
-        }
     }
 }
