@@ -52,6 +52,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.Paused)
+        {
+            return;
+        }
+
         if (isDead)
         {
             if (Input.GetButtonDown("Jump"))
@@ -114,6 +119,11 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GameManager.Instance.Paused)
+        {
+            return;
+        }
+
         if (isDashing || isDead)
         {
             return;
