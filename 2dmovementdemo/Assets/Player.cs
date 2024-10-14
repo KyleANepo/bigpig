@@ -39,8 +39,10 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
 
+    public GameObject bullet;
+
     public Transform checkPoint;
-    private bool isDead;
+    public bool isDead;
     public GameObject gameover;
 
     // Start is called before the first frame update
@@ -57,20 +59,14 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (isDead)
-        {
-            if (Input.GetButtonDown("Jump"))
-            {
-                isDead = false;
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-            rb.velocity = Vector3.zero;
-            return;
-        }
-
         if (isDashing)
         {
             return;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Fire();
         }
 
         animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
@@ -212,12 +208,13 @@ public class Player : MonoBehaviour
 
     public void Die()
     {
-        isDead = true;
-        rb.gravityScale = 0f;
+        GameManager.Instance.Dead = true;
         GameObject CE = Instantiate(deathEffect, transform.position, transform.rotation);
-        animator.SetBool("IsDead", true);
-        animator.Play("dead");
         gameover.SetActive(true);
+        Destroy(gameObject);
+        // rb.gravityScale = 0f;
+        //animator.SetBool("IsDead", true);
+        //animator.Play("dead");
     }
 
     private IEnumerator Dash()
@@ -234,5 +231,11 @@ public class Player : MonoBehaviour
         isDashing = false;
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
+    }
+
+    private void Fire()
+    {
+        GameObject b = Instantiate(bullet, transform);
+        Destroy(b, 0.5f);
     }
 }

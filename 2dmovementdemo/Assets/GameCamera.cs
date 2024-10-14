@@ -11,9 +11,12 @@ public class GameCamera : MonoBehaviour
     
     void Update()
     {
-        Vector3 desiredPosition = target.position + Quaternion.identity * locationOffset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        transform.position = smoothedPosition;
+        if (target)
+        {
+            Vector3 desiredPosition = target.position + Quaternion.identity * locationOffset;
+            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+            transform.position = smoothedPosition;
+        }
     }
 
     void FixedUpdate()

@@ -11,7 +11,9 @@ public class GameManager : MonoBehaviour
 
     // Pause menu stuff. Maybe put in something else if considering different scenes?
     public GameObject PauseMenu;
+    public Player player;
     public bool Paused;
+    public bool Dead;
 
     private void Awake()
     {
@@ -34,6 +36,20 @@ public class GameManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Escape) && Paused)
         {
             ResumeGame();
+        }
+
+        IsDead();
+    }
+
+    public void IsDead()
+    {
+        if (Dead)
+        { 
+            if (Input.GetButtonDown("Jump"))
+            {
+                Dead = false;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
     }
 
