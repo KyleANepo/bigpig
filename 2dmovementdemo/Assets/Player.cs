@@ -40,10 +40,13 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
 
     public GameObject bullet;
+    private float bulletTime;
 
     public Transform checkPoint;
     public bool isDead;
     public GameObject gameover;
+
+    [SerializeField] AudioClip dieSoundClip;
 
     // Start is called before the first frame update
     void Start()
@@ -59,13 +62,16 @@ public class Player : MonoBehaviour
             return;
         }
 
+        bulletTime -= Time.deltaTime;
+
         if (isDashing)
         {
             return;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && bulletTime < 0f)
         {
+            bulletTime = 0.5f;
             Fire();
         }
 
@@ -210,6 +216,7 @@ public class Player : MonoBehaviour
     {
         GameManager.Instance.Dead = true;
         GameObject CE = Instantiate(deathEffect, transform.position, transform.rotation);
+        SFXManager.Instance.PlaySoundFXClip(dieSoundClip, transform, 1f);
         gameover.SetActive(true);
         Destroy(gameObject);
         // rb.gravityScale = 0f;
