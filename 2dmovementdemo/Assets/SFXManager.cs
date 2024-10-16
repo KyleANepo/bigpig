@@ -19,6 +19,7 @@ public class SFXManager : MonoBehaviour
         else
         {
             _instance = this;
+            DontDestroyOnLoad(gameObject);
         }
     }
 

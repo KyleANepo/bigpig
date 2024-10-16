@@ -8,6 +8,7 @@ public class PunchThug : Thug
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject hitbox;
+    [SerializeField] AudioClip dieSoundClip;
 
     public bool Flip = false;
 
@@ -48,6 +49,7 @@ public class PunchThug : Thug
     public override void Die()
     {
         GameObject CE = Instantiate(deathEffect, transform.position, transform.rotation);
+        SFXManager.Instance.PlaySoundFXClip(dieSoundClip, transform, 1f);
         Destroy(gameObject);
     }
 }

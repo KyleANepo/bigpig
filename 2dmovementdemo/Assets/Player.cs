@@ -47,6 +47,9 @@ public class Player : MonoBehaviour
     public GameObject gameover;
 
     [SerializeField] AudioClip dieSoundClip;
+    [SerializeField] AudioClip jumpSoundClip;
+    [SerializeField] AudioClip dashSoundClip;
+    [SerializeField] AudioClip attackSoundClip;
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +63,11 @@ public class Player : MonoBehaviour
         if (GameManager.Instance.Paused)
         {
             return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Die();
         }
 
         bulletTime -= Time.deltaTime;
@@ -94,13 +102,13 @@ public class Player : MonoBehaviour
 
         if (coyoteTimeCounter > 0f && Input.GetButtonDown("Jump"))
         {
+            SFXManager.Instance.PlaySoundFXClip(jumpSoundClip, transform, 1f);
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
 
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-
             coyoteTimeCounter = 0f;
         }
 
@@ -180,6 +188,7 @@ public class Player : MonoBehaviour
             isWallJumping = true;
             rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
+            SFXManager.Instance.PlaySoundFXClip(jumpSoundClip, transform, 1f);
 
             if (transform.localScale.x != wallJumpingDirection)
             {
@@ -226,6 +235,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator Dash()
     {
+        SFXManager.Instance.PlaySoundFXClip(dashSoundClip, transform, 1f);
         canDash = false;
         isDashing = true;
         float originalGravity = rb.gravityScale;
@@ -242,7 +252,8 @@ public class Player : MonoBehaviour
 
     private void Fire()
     {
+        SFXManager.Instance.PlaySoundFXClip(attackSoundClip, transform, 1f);
         GameObject b = Instantiate(bullet, transform);
-        Destroy(b, 0.5f);
+        Destroy(b, 0.18f);
     }
 }
