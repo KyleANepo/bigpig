@@ -4125,11 +4125,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 701536388879645687, guid: 2d522404dd4e69745b29e69ffbddb4c8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.33
+      value: 24.68
       objectReference: {fileID: 0}
     - target: {fileID: 701536388879645687, guid: 2d522404dd4e69745b29e69ffbddb4c8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.21
+      value: 6.82
       objectReference: {fileID: 0}
     - target: {fileID: 701536388879645687, guid: 2d522404dd4e69745b29e69ffbddb4c8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4339,6 +4339,10 @@ PrefabInstance:
     - target: {fileID: 2143935691084935496, guid: ff5139322fc232c4398f3b52fa3787e3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5751932213787058972, guid: ff5139322fc232c4398f3b52fa3787e3, type: 3}
+      propertyPath: speed
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5751932213787058972, guid: ff5139322fc232c4398f3b52fa3787e3, type: 3}
       propertyPath: gameover
