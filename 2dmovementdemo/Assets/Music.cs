@@ -12,7 +12,6 @@ public class Music : MonoBehaviour
     void Start()
     {
         musicPlayer = GetComponent<AudioSource>();
-        PlayMusic(0);
     }
 
     // Update is called once per frame
@@ -30,6 +29,7 @@ public class Music : MonoBehaviour
 
     void PlayMusic(int scene)
     {
+        Debug.Log(musicScores[scene]);
         if (musicPlayer.clip != musicScores[scene])
         {
             musicPlayer.clip = musicScores[scene];
@@ -40,7 +40,9 @@ public class Music : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("OnSceneLoaded: " + scene.name);
-        if (scene.name == "SampleScene" )
+        if (scene.name == "MainMenu")
+            PlayMusic(0);
+        else if (scene.name == "SampleScene")
             PlayMusic(1);
 
     }

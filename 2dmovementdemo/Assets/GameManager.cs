@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public Player player;
     public bool Paused;
     public bool Dead;
+    public bool End;
 
     private void Awake()
     {
@@ -25,6 +26,11 @@ public class GameManager : MonoBehaviour
         {
             _instance = this;
         }
+    }
+
+    private void Start()
+    {
+        SFXManager.Instance.PlayMusic(1);
     }
 
     private void Update()

@@ -8,14 +8,14 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     private float horizontal;
-    private float speed = 8f;
-    private float jumpingPower = 16f;
+    [SerializeField] private float speed = 8f;
+    [SerializeField] private float jumpingPower = 16f;
     private bool isFacingRight = true;
     private float coyoteTime = 0.05f;
     private float coyoteTimeCounter;
 
     private bool isWallSliding;
-    private float wallSlidingSpeed = 3f;
+    [SerializeField] private float wallSlidingSpeed = 3f;
 
     private bool isWallJumping;
     private float wallJumpingDirection;
@@ -26,9 +26,9 @@ public class Player : MonoBehaviour
 
     private bool canDash = true;
     private bool isDashing;
-    private float dashingPower = 18f;
-    private float dashingTime = 0.2f; 
-    private float dashingCooldown = 1f;
+    [SerializeField] private float dashingPower = 18f;
+    [SerializeField] private float dashingTime = 0.2f;
+    [SerializeField] private float dashingCooldown = 1f;
 
     public Animator animator;
 
